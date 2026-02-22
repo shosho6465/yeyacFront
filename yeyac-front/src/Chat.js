@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './ChatApp.css';
+import './Chat.css';
 
-const ChatApp = () => {
+const Chat = () => {
   const [isFullSize, setIsFullSize] = useState(false);
   
   // 1. 상태 관리 추가: 입력값(input)과 메시지 리스트(messages)
@@ -24,6 +24,26 @@ const ChatApp = () => {
       sender: 'user',
       text: inputText
     };
+
+    const url = `http://localhost:8080/api/v1/chat/send?ho_num=1&user_num=1`;
+
+    fetch("/api/v1/chat/send", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain; charset=UTF-8',
+      },
+      body: inputText, // @RequestBody로 전달될 문자열
+    })
+    .then(response => {
+      if (response.ok) {
+        console.log("서버 저장 성공");
+      } else {
+        console.error("서버 응답 에러");
+      }
+    })
+    .catch(error => {
+      console.error("네트워크 에러:", error);
+    });
 
     setMessages([...messages, newMessage]); // 기존 메시지에 새 메시지 추가
     setInputText(''); // 입력창 초기화
@@ -75,4 +95,4 @@ const ChatApp = () => {
   );
 };
 
-export default ChatApp;
+export default Chat;

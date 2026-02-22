@@ -11,7 +11,7 @@ function HoAndPharNoti(){
     //axios는 fetch의 역할
     useEffect(() => {
         // 서버에서 예약 정보를 가져오는 API 호출 예시
-        axios.get("/api/last-reservation")
+        axios.get("/api/v1/last-reservation")
             .then(res => setReservation(res.data))
             .catch(err => console.log(err));
     }, []);

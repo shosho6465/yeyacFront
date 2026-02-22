@@ -21,7 +21,7 @@ function Find(){
         }
 
         try{
-            const response = await fetch("/api/send-code", {
+            const response = await fetch("/api/v1/users/send-code", {
                 method : "POST",
                 headers : { "Content-Type" : "application/json" },
                 body : JSON.stringify({phone : phone})
@@ -42,7 +42,7 @@ function Find(){
             alert("인증번호를 입력해주세요.");
         }
         try {
-            const response = await fetch("/api/verify-code", {
+            const response = await fetch("/api/v1/users/verify-code", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ phone: phone, code: veryCode })
@@ -59,28 +59,11 @@ function Find(){
             console.error(error);
         }
     }
-
-    // async function findId (){
-    //     try{
-    //         const response = await fetch("", {
-    //         method : "POST",
-    //         headers : {
-    //             "Content-Type" : "application/json"
-    //         },
-    //         body : JSON.stringify(findIdData)
-    //     })
-    // }catch(error){
-    //     console.error("error :", error);
-    //     alert("네트워크 통신 중 오류 발생");
-    //     return;
-    // }
-
-    //아이디 찾기 (최종 제출)
     async function findId() {
         if (!isVerified) return alert("먼저 휴대폰 인증을 완료해주세요.");
 
         try {
-            const response = await fetch("/api/find-id", {
+            const response = await fetch("/api/v1/users/find-id", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ phone: phone })

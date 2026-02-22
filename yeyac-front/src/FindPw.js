@@ -28,8 +28,9 @@ function Find(){
             
             const data = await response.json();
             if (response.ok) {
-                // 성공 시 비번 재설정 페이지로 이동하며 데이터 전달
-                navigate("/resetPw", { state: { id: id, info: data } });
+                // 성공 시 비번 재설정 페이지로 이동하고 token 보냄
+                // data.token은 서버 응답 구조에 따라 data.resetToken 등으로 바뀔 수 있음
+                navigate("/resetPw", { state: { token: data.token } });
             } else {
                 alert("일치하는 계정이 없습니다.");
             }

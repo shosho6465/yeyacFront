@@ -1,72 +1,88 @@
+import "./AdminLogin.css";
 import { useState } from "react";
-import "./UserLogin.css"
 import { useNavigate } from "react-router-dom";
 
-function UserLogin(){
+function AdminLogin(){
 
-    const [userLoginData, setUserLoginData] = useState({ id : "", pw : "", keepLogin : false})
+    const [userId, setUserId] = useState("");
+    const [userPw, setUserPw] = useState("");
+    const [keepLogin, setKeepLogin] = useState(false);
+    const [showPw, setShowPw] = useState(false);
     const navigate = useNavigate();
 
-    // 입력값을 처리하는 함수 (e.target을 여기 안으로 옮겼어요)
-    const handleInputChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setUserLoginData({ ...userLoginData, [name]: type === "checkbox" ? checked : value });
-    };
+const handleNavigate = (path) => {
+    navigate(path); //8개의 url 이동 담당
+}
 
-    async function submitLogin(){
-        try{
-        const response = await fetch("/api/userLogin", {
-            method : "POST",
+//서버로 데이터 전송
+async function handleLogin (e){
+    e.preventDefault();
+    
+    if (!userId.trim() || !userPw.trim()) {
+            alert("아이디와 비밀번호를 모두 입력해주세요.");
+            return;
+        }
+
+    const loginData = {
+        userId : userId,
+        userPw : userPw,
+        keepLogin : keepLogin //true 또는 false가 서버로 전송됨
+    };
+    console.log("서버로 보낼 데이터:", loginData);
+
+    try{
+        const response = await fetch("/api/v1/auth/user/login", {
+            method : "post",
             headers : {
-                "Content-Type" : "application/json",
+                "Content-Type" : "application/json"
             },
-            body : JSON.stringify(userLoginData),
+            body : JSON.stringify(loginData),
         });
 
-    if(response.ok){
-        alert("로그인 성공")
+        if(response.ok){
+            alert("로그인 성공");
+            navigate("/main"); //성공할 시 이동할 페이지
+        }else{
+            alert("아이디 또는 비밀번호를 확인하세요");
+        }}catch(error){
+            console.error("로그인 중 에러 발생", error);
+            alert("서버와 통신 중 오류가 발생했습니다.");
     }
-    else{
-        alert("로그인 실패");
-    }
-    }catch(error){
-        console.error("error :", error);
-        alert("네트워크에서 오류가 발생했습니다.");
-    }
-    }
+};
 
     return (
-        <div className="container">
-        <div className="logo" onClick={()=> {navigate("/main")}}>logo</div>
+    <div className="container">
+        <div className="logo" onClick={() => handleNavigate("/main")}>logo</div>
         <br />
         <br />
             <div className="idDiv">
-                <input className="id" name="id" placeholder="아이디 입력" value={userLoginData.id} onChange={handleInputChange}/>
+                <input className="id" name="id" placeholder="아이디 입력" value={userId} onChange={(e)=> setUserId(e.target.value)}/>
             </div>
             <div className="pwDiv">
-                <input className="pw" type="password" name="pw" placeholder="비밀번호 입력" value={userLoginData.pw} onChange={handleInputChange}/>
+                <input className="pw" type={showPw ? "text" : "password"} name="pw" placeholder="비밀번호 입력" value={userPw} onChange={(e)=>{setUserPw(e.target.value)}}/>
+                <img className="show" alt="비번" src="img/visibility_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" value={showPw} onClick={() => setShowPw(!showPw)}/>
             </div>
-            <br />
             <div className="keepLoginDiv">
-                <input className="keepLogin" type="checkbox" name="keepLogin" checked={userLoginData.keepLogin} onChange={handleInputChange}/>
-                <div className="keepLoginTextDiv"> 
-                    <label htmlFor="keepLoginText">로그인 상태 유지</label>
-                </div>
+                <label htmlFor="checkbox" >로그인 상태 유지</label>
+                <input className="keepLogin" type="checkbox" name="keepLoginCheck" id="checkbox" checked={keepLogin} onChange={(e) =>{ setKeepLogin(e.target.checked)}}/>
             </div>
-
-        <button type="button" className="go" onClick={submitLogin}>로그인</button>
+        <div className="goDiv">
+            <button type="submit" className="go" onClick={handleLogin}>로그인</button>
+        </div>
         <div className="divBox">
-            <div className="findId" onClick={()=> {navigate("/findId")}}>아이디 찾기</div>
-            <div className="resetPw" onClick={()=> {navigate("/findPw")}}>비밀번호 재설정</div>
-            <div className="signup" onClick={()=> {navigate("/userSignup")}}>회원가입</div>
+            <a className="findId" onClick={() => handleNavigate("/find/id")}>아이디 찾기</a>
+            <a className="resetPw" onClick={() => handleNavigate("/resetPassword")}>비밀번호 재설정</a>
+            <a className="signup" onClick={() => handleNavigate("/signup")}>회원가입</a>
         </div>
         <div className="social">
-            <div className="kakao" onClick={()=> {navigate("/api/kakao")}}></div>
-            <div className="naver" onClick={()=> {navigate("/api/naver")}}></div>
-            <div className="google" onClick={()=> {navigate("/api/google")}}></div>
+            <a className="kakao" onClick={() => handleNavigate("/api/kakao")}></a>
+            <a className="naver" onClick={() => handleNavigate("/api/naver")}></a>
+            <a className="google" onClick={() => handleNavigate("/main")}></a>
         </div>
-        <div className="adminLogin" onClick={()=> {navigate("/adminLogin")}}>관리자로 로그인</div>
+        <br />
+        <a className="userLogin" onClick={() => handleNavigate("/adminLogin")}>관리자로 로그인</a>
     </div>
     );
 }
-export default UserLogin;
+export default AdminLogin;
+    

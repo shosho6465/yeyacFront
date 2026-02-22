@@ -10,7 +10,7 @@ import ResetPassword from "./ResetPassword"
 import UserLogin from "./UserLogin"
 import UserSignup from "./UserSignup"
 import DeptSearch from "./DeptSearch"
-import ChatApp from "./ChatApp";
+import Chat from "./Chat";
 import { BrowserRouter, Routes, Route, Link} from "react-router-dom";
 
  
@@ -29,7 +29,7 @@ function App() {
     <Link to="/hos_RegionSelect">약국지역찾기. </Link>
     <Link to="/userLogin">사용자로그인. </Link>
     <Link to="/deptSearch">자동완성. </Link>
-    <Link to="/chatApp">채팅창. </Link>
+    <Link to="/chat">채팅창. </Link>
 
     <Link to="/signup/userSignup">사용자회원가입. </Link>
     <Routes>
@@ -44,7 +44,7 @@ function App() {
         <Route path='/userLogin' element={<UserLogin />} />
         <Route path='/signup/userSignup' element={<UserSignup />} />
         <Route path='/deptSearch' element={<DeptSearch />} />
-        <Route path='/chatApp' element={<ChatApp />} />
+        <Route path='/chat' element={<Chat />} />
     </Routes>
     </BrowserRouter>
     

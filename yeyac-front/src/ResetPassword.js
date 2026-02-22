@@ -1,10 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./ResetPassword.css"
 
 
 function ResetPassword(){
 
+    const location = useLocation();
+    const navigate = useNavigate();
     const [resetPassword, setResetPassword] = useState({ pw : "", pw2 : ""});
+
+    // 이전 페이지에서 넘어온 토큰 받기
+    const token = location.state?.token;
+    // 토큰이 없으면 비정상 접근으로 간주하고 내쫓기
+    useEffect(() => {
+        if (!token) {
+            alert("인증 정보가 없습니다. 본인 인증을 다시 진행해주세요.");
+            navigate("/find"); // 비번 찾기 페이지로 이동
+        }
+    }, [token, navigate]);
 
     async function resetPwButton(){
 
@@ -25,26 +38,27 @@ function ResetPassword(){
         }
 
         try{
-            const response = await fetch("/api/resetPw", {
+            const response = await fetch("/api/v1/resetPw", {
             method : "POST",
             headers : {
                 "Content-Type" : "application/json",
+                "Authorization": `Bearer ${token}`
             },
             body : JSON.stringify({password : resetPassword.pw}),
         });
 
         if(response.ok){
             alert("성공");
+            navigate("/login"); // 성공 후 로그인 페이지로 이동
         }
-        else{
-            alert("비밀번호를 다시 확인해주세요.")
-        }
-
         }catch(error){
             console.error("error :", error);
             alert("네트워크에 오류가 발생했습니다.")
         }
     };
+
+    // 토큰이 없으면 렌더링하지 않음
+    if (!token) return null;
 
     return(
         <div className="container">

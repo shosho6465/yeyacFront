@@ -7,6 +7,7 @@ function AdminLogin(){
     const [userId, setUserId] = useState("");
     const [userPw, setUserPw] = useState("");
     const [keepLogin, setKeepLogin] = useState(false);
+    const [showPw, setShowPw] = useState(false);
     const navigate = useNavigate();
 
 const handleNavigate = (path) => {
@@ -30,7 +31,7 @@ async function handleLogin (e){
     console.log("서버로 보낼 데이터:", loginData);
 
     try{
-        const response = await fetch("/api/v1/auth/adminLogin", {
+        const response = await fetch("/api/v1/auth/admin/login", {
             method : "post",
             headers : {
                 "Content-Type" : "application/json"
@@ -58,8 +59,8 @@ async function handleLogin (e){
                 <input className="id" name="id" placeholder="아이디 입력" value={userId} onChange={(e)=> setUserId(e.target.value)}/>
             </div>
             <div className="pwDiv">
-                <input className="pw" type="password" name="pw" placeholder="비밀번호 입력" value={userPw} onChange={(e)=>{setUserPw(e.target.value)}}/>
-                <img className="show" alt="비번" src="img/visibility_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" />
+                <input className="pw" type={showPw ? "text" : "password"} name="pw" placeholder="비밀번호 입력" value={userPw} onChange={(e)=>{setUserPw(e.target.value)}}/>
+                <img className="show" alt="비번" src="img/visibility_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" value={showPw} onClick={() => setShowPw(!showPw)}/>
             </div>
             <div className="keepLoginDiv">
                 <label htmlFor="checkbox" >로그인 상태 유지</label>

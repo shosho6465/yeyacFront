@@ -1,0 +1,111 @@
+/* 전체 컨테이너 */
+.chat-window {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 1000;
+}
+
+/* 크기 상태 클래스 */
+.small-size {
+  width: 380px;
+  height: 600px;
+}
+
+.full-size {
+  width: 1200px; /* 1440px 화면 기준 적정 너비 */
+  height: 85vh;
+  right: 50%;
+  bottom: 50%;
+  transform: translate(50%, 50%); /* 화면 중앙 정렬 */
+}
+
+/* 헤더 */
+.chat-header {
+  background-color: #5bca8d;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-buttons button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+/* 채팅 영역 */
+.chat-messages {
+  flex: 1;
+  padding: 20px;
+  background-color: #f8f9fa;
+  overflow-y: auto;
+}
+
+.message-row {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.message-row.user { justify-content: flex-end; }
+.message-row.hospital { justify-content: flex-start; }
+
+.bubble {
+  padding: 10px 15px;
+  border-radius: 15px;
+  max-width: 70%;
+  font-size: 14px;
+  line-height: 1.5;
+  position: relative;
+}
+
+.hospital .bubble {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-top-left-radius: 2px;
+}
+
+.user .bubble {
+  background-color: #5bca8d;
+  color: white;
+  border-top-right-radius: 2px;
+}
+
+/* 입력창 */
+.chat-input-area {
+  padding: 15px;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input-area input {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 8px 15px;
+  outline: none;
+}
+
+.send-btn {
+  background-color: #5bca8d;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+}
